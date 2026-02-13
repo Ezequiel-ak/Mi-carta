@@ -24,15 +24,27 @@ body{
   perspective:1500px;
 }
 
+/* TEXTO SUPERIOR */
+
+.title{
+  position:absolute;
+  top:18%;
+  color:white;
+  font-size:20px;
+  font-weight:bold;
+  text-shadow:0 4px 10px rgba(0,0,0,0.4);
+  z-index:5;
+}
+
 /* SOBRE */
 
 .envelope{
   width:320px;
   height:200px;
   position:relative;
-  cursor:pointer;
   transform-style:preserve-3d;
-  transition:1.2s;
+  transition:transform 1.2s ease;
+  z-index:5;
 }
 
 .base{
@@ -51,20 +63,11 @@ body{
   background:linear-gradient(to bottom,#ff6fb3,#ff2a7f);
   clip-path:polygon(0 0,100% 0,50% 55%);
   transform-origin:top;
-  transition:1.2s;
+  transition:transform 1.2s ease;
 }
 
-.open .flap{
+.envelope.open .flap{
   transform:rotateX(-180deg);
-}
-
-.title{
-  position:absolute;
-  top:18%;
-  color:white;
-  font-size:20px;
-  font-weight:bold;
-  text-shadow:0 4px 10px rgba(0,0,0,0.4);
 }
 
 /* ESCENA INTERIOR */
@@ -78,7 +81,7 @@ body{
   justify-content:center;
   opacity:0;
   transform:scale(1.2);
-  transition:1.5s ease;
+  transition:all 1.5s ease;
 }
 
 .scene.show{
@@ -93,7 +96,7 @@ body{
   margin-bottom:20px;
   filter:drop-shadow(0 15px 25px rgba(0,0,0,0.3));
   opacity:0;
-  transform:translateY(50px);
+  transform:translateY(40px);
   transition:1.5s ease;
 }
 
@@ -129,8 +132,6 @@ body{
   color:#444;
 }
 
-/* SCROLL SOLO EN TEXTO */
-
 .letter::-webkit-scrollbar{
   width:6px;
 }
@@ -150,8 +151,8 @@ body{
 
 .petal{
   position:absolute;
-  width:16px;
-  height:22px;
+  width:14px;
+  height:20px;
   background:radial-gradient(circle at 30% 30%,#ffb3d9,#ff0066);
   border-radius:50%;
   box-shadow:0 5px 15px rgba(0,0,0,0.3);
@@ -161,11 +162,9 @@ body{
 @keyframes fall{
   0%{
     transform:translateY(-10vh) rotate(0deg);
-    opacity:1;
   }
   100%{
     transform:translateY(110vh) rotate(360deg);
-    opacity:0.8;
   }
 }
 
@@ -175,7 +174,7 @@ body{
 
 <div class="title">Abre la carta amor ❤️</div>
 
-<div class="envelope" onclick="openLetter()">
+<div class="envelope" id="envelope">
   <div class="base"></div>
   <div class="flap"></div>
 </div>
@@ -224,28 +223,39 @@ Te amo más de lo que las palabras pueden expresar 💕✨.
 
 <script>
 
-function openLetter(){
-  document.querySelector('.envelope').classList.add('open');
-  document.getElementById('music').play();
+const envelope = document.getElementById("envelope");
+
+envelope.addEventListener("click", function(){
+
+  envelope.classList.add("open");
+
+  // reproducir música sin bloquear animación
+  const music = document.getElementById("music");
+  music.play().catch(()=>{});
 
   setTimeout(()=>{
-    document.querySelector('.envelope').style.display="none";
-    document.querySelector('.title').style.display="none";
-    document.getElementById('scene').classList.add('show');
-    document.getElementById('bouquet').classList.add('show');
-    document.getElementById('letter').classList.add('show');
+    envelope.style.display="none";
+    document.querySelector(".title").style.display="none";
+
+    document.getElementById("scene").classList.add("show");
+    document.getElementById("bouquet").classList.add("show");
+    document.getElementById("letter").classList.add("show");
+
     createPetals();
+
   },1200);
-}
+
+});
 
 function createPetals(){
-  const container=document.getElementById('petals');
-  for(let i=0;i<15;i++){
-    let petal=document.createElement('div');
-    petal.className='petal';
-    petal.style.left=Math.random()*100+'vw';
-    petal.style.animationDuration=(5+Math.random()*4)+'s';
-    container.appendChild(petal);
+  const container=document.getElementById("petals");
+
+  for(let i=0;i<12;i++){
+    let p=document.createElement("div");
+    p.className="petal";
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=(5+Math.random()*4)+"s";
+    container.appendChild(p);
   }
 }
 
