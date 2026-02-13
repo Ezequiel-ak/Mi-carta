@@ -16,64 +16,69 @@ Mi 14
 
 body{
   height:100vh;
-  background:linear-gradient(135deg,#ff9ecf,#ffc1e3);
-  overflow:hidden;
+  background:linear-gradient(135deg,#ff9ac9,#ffc8e6);
   display:flex;
   justify-content:center;
   align-items:center;
-  perspective:1200px;
+  overflow:hidden;
+  perspective:1500px;
 }
 
-/* SOBRE 3D */
+/* SOBRE */
 
 .envelope{
   width:320px;
-  height:220px;
+  height:200px;
   position:relative;
   cursor:pointer;
-  transition:transform 1.2s ease;
   transform-style:preserve-3d;
+  transition:1.2s;
 }
 
 .base{
+  position:absolute;
   width:100%;
   height:100%;
-  background:#ff5fa2;
-  border-radius:8px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.25);
-  position:absolute;
+  background:#ff4d94;
+  border-radius:10px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.3);
 }
 
 .flap{
+  position:absolute;
   width:100%;
   height:100%;
-  background:linear-gradient(to bottom,#ff77b7,#ff3d95);
-  position:absolute;
+  background:linear-gradient(to bottom,#ff6fb3,#ff2a7f);
   clip-path:polygon(0 0,100% 0,50% 55%);
   transform-origin:top;
-  transition:transform 1.2s ease;
-  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+  transition:1.2s;
 }
 
 .open .flap{
   transform:rotateX(-180deg);
 }
 
-/* TRANSICIÓN CINEMATOGRÁFICA */
+.title{
+  position:absolute;
+  top:18%;
+  color:white;
+  font-size:20px;
+  font-weight:bold;
+  text-shadow:0 4px 10px rgba(0,0,0,0.4);
+}
+
+/* ESCENA INTERIOR */
 
 .scene{
   position:absolute;
-  width:100%;
-  height:100%;
-  background:linear-gradient(180deg,#ff9ecf,#ffd6ec);
+  inset:0;
   display:flex;
-  justify-content:center;
-  align-items:center;
   flex-direction:column;
+  align-items:center;
+  justify-content:center;
   opacity:0;
-  transform:scale(1.3);
-  transition:all 1.5s ease;
-  backdrop-filter:blur(8px);
+  transform:scale(1.2);
+  transition:1.5s ease;
 }
 
 .scene.show{
@@ -81,22 +86,23 @@ body{
   transform:scale(1);
 }
 
-/* RAMO SVG */
+/* RAMO */
 
 .bouquet{
   width:200px;
   margin-bottom:20px;
+  filter:drop-shadow(0 15px 25px rgba(0,0,0,0.3));
   opacity:0;
-  transform:translateY(50px) scale(.8);
+  transform:translateY(50px);
   transition:1.5s ease;
 }
 
 .bouquet.show{
   opacity:1;
-  transform:translateY(0) scale(1);
+  transform:translateY(0);
 }
 
-/* TEXTO DESLIZABLE */
+/* CARTA */
 
 .letter{
   width:85%;
@@ -104,11 +110,11 @@ body{
   max-height:45vh;
   overflow-y:auto;
   background:white;
-  padding:20px;
-  border-radius:16px;
-  box-shadow:0 10px 40px rgba(0,0,0,0.2);
+  padding:22px;
+  border-radius:18px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.25);
   opacity:0;
-  transform:translateY(60px);
+  transform:translateY(40px);
   transition:1.5s ease;
 }
 
@@ -118,54 +124,49 @@ body{
 }
 
 .letter p{
-  line-height:1.6;
-  color:#444;
   font-size:15px;
+  line-height:1.7;
+  color:#444;
 }
 
-/* SCROLL SUAVE */
+/* SCROLL SOLO EN TEXTO */
 
 .letter::-webkit-scrollbar{
   width:6px;
 }
 .letter::-webkit-scrollbar-thumb{
-  background:#ff6fb3;
-  border-radius:4px;
+  background:#ff5fa2;
+  border-radius:10px;
 }
 
-/* PÉTALOS 3D */
+/* PÉTALOS */
 
 .petals{
   position:absolute;
-  width:100%;
-  height:100%;
+  inset:0;
   pointer-events:none;
   overflow:hidden;
 }
 
 .petal{
   position:absolute;
-  width:18px;
-  height:24px;
-  background:radial-gradient(circle at 30% 30%,#ffb3d9,#ff2a84);
-  border-radius:50% 50% 50% 50%;
-  box-shadow:0 0 10px rgba(255,0,100,0.5);
-  animation:fall 8s linear infinite;
-  transform-style:preserve-3d;
+  width:16px;
+  height:22px;
+  background:radial-gradient(circle at 30% 30%,#ffb3d9,#ff0066);
+  border-radius:50%;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  animation:fall linear infinite;
 }
 
 @keyframes fall{
-  0%{transform:translateY(-50px) rotateY(0deg) rotateX(0deg);}
-  100%{transform:translateY(110vh) rotateY(360deg) rotateX(360deg);}
-}
-
-.title{
-  position:absolute;
-  top:15%;
-  color:white;
-  font-size:20px;
-  font-weight:bold;
-  text-shadow:0 4px 10px rgba(0,0,0,0.3);
+  0%{
+    transform:translateY(-10vh) rotate(0deg);
+    opacity:1;
+  }
+  100%{
+    transform:translateY(110vh) rotate(360deg);
+    opacity:0.8;
+  }
 }
 
 </style>
@@ -181,43 +182,39 @@ body{
 
 <div class="scene" id="scene">
 
-  <!-- RAMO SVG REALISTA -->
-  <svg class="bouquet" id="bouquet" viewBox="0 0 200 250">
-    <defs>
-      <linearGradient id="petalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#ffb6d9"/>
-        <stop offset="100%" stop-color="#ff007a"/>
-      </linearGradient>
-      <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stop-color="#4caf50"/>
-        <stop offset="100%" stop-color="#2e7d32"/>
-      </linearGradient>
-    </defs>
+<svg class="bouquet" id="bouquet" viewBox="0 0 200 250">
+  <defs>
+    <linearGradient id="petalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb6d9"/>
+      <stop offset="100%" stop-color="#ff007a"/>
+    </linearGradient>
+    <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4caf50"/>
+      <stop offset="100%" stop-color="#2e7d32"/>
+    </linearGradient>
+  </defs>
 
-    <!-- Tallos -->
-    <rect x="90" y="120" width="6" height="100" fill="url(#stemGrad)"/>
-    <rect x="70" y="130" width="6" height="90" fill="url(#stemGrad)"/>
-    <rect x="110" y="130" width="6" height="90" fill="url(#stemGrad)"/>
+  <rect x="90" y="120" width="6" height="100" fill="url(#stemGrad)"/>
+  <rect x="70" y="130" width="6" height="90" fill="url(#stemGrad)"/>
+  <rect x="110" y="130" width="6" height="90" fill="url(#stemGrad)"/>
 
-    <!-- Tulipanes -->
-    <ellipse cx="93" cy="110" rx="20" ry="30" fill="url(#petalGrad)"/>
-    <ellipse cx="73" cy="120" rx="18" ry="28" fill="url(#petalGrad)"/>
-    <ellipse cx="113" cy="120" rx="18" ry="28" fill="url(#petalGrad)"/>
-  </svg>
+  <ellipse cx="93" cy="110" rx="20" ry="30" fill="url(#petalGrad)"/>
+  <ellipse cx="73" cy="120" rx="18" ry="28" fill="url(#petalGrad)"/>
+  <ellipse cx="113" cy="120" rx="18" ry="28" fill="url(#petalGrad)"/>
+</svg>
 
-  <!-- CARTA -->
-  <div class="letter" id="letter">
-    <p>
-    Han pasado 5 meses desde que nuestras vidas se unieron, y cada día sé que eres el hombre de mi vida ❤️.
-    Estás en cada pensamiento y en cada latido de mi corazón; tu presencia ilumina mis días como un rayo de sol ☀️💖.
-    Me haces sentir la chica más amada del mundo con tus mensajes, llamadas y palabras de amor 💌.
-    Eres atento, cariñoso y siempre logras hacerme sonreír.
-    Estoy orgullosa de nosotros y de nuestra relación.
-    Eres mi compañero, mi amigo, mi confidente y mi todo 💞.
-    Eres el hombre de mis sueños, mi alma gemela, y contigo siento que puedo conquistar el mundo.
-    Te amo más de lo que las palabras pueden expresar 💕✨.
-    </p>
-  </div>
+<div class="letter" id="letter">
+<p>
+Han pasado 5 meses desde que nuestras vidas se unieron, y cada día sé que eres el hombre de mi vida ❤️.
+Estás en cada pensamiento y en cada latido de mi corazón; tu presencia ilumina mis días como un rayo de sol ☀️💖.
+Me haces sentir la chica más amada del mundo con tus mensajes, llamadas y palabras de amor 💌.
+Eres atento, cariñoso y siempre logras hacerme sonreír.
+Estoy orgullosa de nosotros y de nuestra relación.
+Eres mi compañero, mi amigo, mi confidente y mi todo 💞.
+Eres el hombre de mis sueños, mi alma gemela, y contigo siento que puedo conquistar el mundo.
+Te amo más de lo que las palabras pueden expresar 💕✨.
+</p>
+</div>
 
 </div>
 
@@ -243,11 +240,11 @@ function openLetter(){
 
 function createPetals(){
   const container=document.getElementById('petals');
-  for(let i=0;i<20;i++){
+  for(let i=0;i<15;i++){
     let petal=document.createElement('div');
-    petal.classList.add('petal');
-    petal.style.left=Math.random()*100+"vw";
-    petal.style.animationDuration=(6+Math.random()*5)+"s";
+    petal.className='petal';
+    petal.style.left=Math.random()*100+'vw';
+    petal.style.animationDuration=(5+Math.random()*4)+'s';
     container.appendChild(petal);
   }
 }
