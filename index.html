@@ -3,72 +3,374 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Carta</title>
+    <title>Carta Romántica - Mi Amor</title>
+    
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            position: relative;
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ff4e8a 0%, #ff99c8 50%, #ff6b9d 100%);
             overflow: hidden;
+            height: 100vh;
         }
-        #envelope {
-            width: 200px;
-            height: 100px;
-            background: #f9f9f9;
-            border: 2px solid #bfbfbf;
+
+        /* Efecto de luz suave animada */
+        body::after {
+            content: "";
+            position: fixed;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3), transparent 60%);
+            animation: softLight 8s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes softLight {
+            from {
+                transform: translate(-10%, -10%) scale(1);
+            }
+            to {
+                transform: translate(-5%, -5%) scale(1.1);
+            }
+        }
+
+        /* ESCENA PRINCIPAL */
+        .scene {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1500px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* SOBRE ROMÁNTICO */
+        .envelope {
+            width: 320px;
+            height: 200px;
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transition: all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .envelope:hover {
+            transform: translateY(-20px);
+        }
+
+        .base {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 78, 138, 0.2);
             position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: float 3s ease-in-out infinite;
+            border: 2px solid rgba(233, 30, 99, 0.1);
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .question {
+
+        .flap {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffe6f0 0%, #ffb3d9 100%);
             position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            transform-origin: top;
+            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            clip-path: polygon(0 0, 100% 0, 50% 65%);
+            box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e91e63;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            padding: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .envelope.open .flap {
+            transform: rotateX(-180deg);
+        }
+
+        .envelope.fadeOut {
+            transform: scale(4);
+            opacity: 0;
+        }
+
+        /* INTERIOR - CONTENIDO */
+        .inside {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 230, 240, 0.95) 100%);
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 60px;
+            overflow-y: auto;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .inside.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* RAMO DE FLORES */
+        .bouquet {
+            font-size: 80px;
+            margin-bottom: 40px;
+            position: relative;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .main-flower {
+            animation: bloomFlower 1.5s ease-out forwards;
+        }
+
+        @keyframes bloomFlower {
+            from {
+                transform: scale(0) rotateY(180deg);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* Pétalos adicionales */
+        .tulip {
+            position: absolute;
+            font-size: 40px;
+            animation: enterTulip 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes enterTulip {
+            from {
+                transform: translateY(-300px) translateX(0) scale(0.3) rotateZ(0deg);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1) rotateZ(var(--rotation));
+                opacity: 1;
+            }
+        }
+
+        /* TÍTULO */
+        .title {
+            font-size: 32px;
+            color: #e91e63;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInTitle 2s ease forwards 1.5s;
+            font-weight: bold;
+            text-shadow: 0 2px 10px rgba(233, 30, 99, 0.1);
+        }
+
+        @keyframes fadeInTitle {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* TEXTO POÉTICO */
+        .text {
+            width: 90%;
+            max-width: 650px;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: poemFade 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 2.5s;
+            color: #555;
+            font-size: 18px;
+            line-height: 2;
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes poemFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* FIRMA */
+        .signature {
             font-size: 24px;
-            color: #ff0080;
-            animation: floatQuestion 2s ease-in-out infinite;
+            color: #e91e63;
+            margin-top: 40px;
+            opacity: 0;
+            animation: poemFade 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 4s;
+            font-style: italic;
+            font-family: 'Brush Script MT', cursive;
         }
-        @keyframes floatQuestion {
-            0%, 100% { transform: translateY(-5px); }
-            50% { transform: translateY(5px); }
+
+        /* CORAZONES FLOTANTES */
+        .floating-heart {
+            position: fixed;
+            font-size: 24px;
+            opacity: 0.6;
+            animation: float 4s ease-in infinite;
+            pointer-events: none;
         }
-        .wing {
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            position: absolute;
-            animation: flap 1s ease-in-out infinite;
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
         }
-        .wing-left {
-            border-bottom: 30px solid #ffcc00;
-            top: -15px;
-            left: -20px;
-            transform: rotate(-15deg);
+
+        /* SCROLL */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .wing-right {
-            border-bottom: 30px solid #ffcc00;
-            top: -15px;
-            right: -20px;
-            transform: rotate(15deg);
+
+        ::-webkit-scrollbar-track {
+            background: rgba(233, 30, 99, 0.1);
         }
-        @keyframes flap {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(233, 30, 99, 0.3);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(233, 30, 99, 0.5);
         }
     </style>
 </head>
 <body>
-    <div class="question">¿Quieres ser mi sanvalentin❤️?</div>
-    <div id="envelope">
-        <div class="wing wing-left"></div>
-        <div class="wing wing-right"></div>
+    <div class="scene">
+        <div class="envelope" id="envelope" onclick="openLetter()">
+            <div class="base"></div>
+            <div class="flap"></div>
+            <div class="label">💌 Abre la carta amor ❤️</div>
+        </div>
     </div>
+
+    <div class="inside" id="inside">
+        <div class="bouquet" id="bouquet">
+            <div class="main-flower">💐</div>
+        </div>
+
+        <div class="title">Para ti, mi amor ❤️</div>
+
+        <div class="text">
+            Han pasado 5 meses desde que nuestras vidas se unieron, y cada día sé que eres el hombre de mi vida ❤️.
+            <br><br>
+            Estás en cada pensamiento y en cada latido de mi corazón; tu presencia ilumina mis días como un rayo de sol ☀️💖.
+            <br><br>
+            Me haces sentir la chica más amada del mundo con tus mensajes, llamadas y palabras de amor 💌.
+            <br><br>
+            Eres atento, cariñoso y siempre logras hacerme sonreír.
+            <br><br>
+            Estoy orgullosa de nosotros y de nuestra relación.
+            Eres mi compañero, mi amigo, mi confidente y mi todo 💞.
+            <br><br>
+            Eres el hombre de mis sueños, mi alma gemela,
+            y contigo siento que puedo conquistar el mundo.
+            <br><br>
+            Te amo más de lo que las palabras pueden expresar 💕✨.
+        </div>
+
+        <div class="signature">Con todo mi amor,<br>Tu princesa 👑💕</div>
+    </div>
+
+    <audio id="music" src="musica.mp3"></audio>
+
+    <script>
+        function openLetter() {
+            const envelope = document.getElementById("envelope");
+            envelope.classList.add("open");
+            
+            // Reproducir música
+            const music = document.getElementById("music");
+            music.play().catch(err => console.log("Música no disponible", err));
+
+            // Sobre desaparece
+            setTimeout(() => {
+                envelope.classList.add("fadeOut");
+            }, 1200);
+
+            // Mostrar contenido
+            setTimeout(() => {
+                document.getElementById("inside").classList.add("show");
+                createTulips();
+                createFloatingHearts();
+            }, 2000);
+        }
+
+        function createTulips() {
+            const bouquet = document.getElementById("bouquet");
+            const flowers = ["🌷", "🌹", "🌸", "💐", "🌺"];
+            
+            for (let i = 0; i < 8; i++) {
+                let tulip = document.createElement("div");
+                tulip.classList.add("tulip");
+                tulip.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+                tulip.style.setProperty('--rotation', (Math.random() * 360) + 'deg');
+                tulip.style.left = (i * 30 - 105) + "px";
+                tulip.style.animationDelay = (i * 0.15) + "s";
+                bouquet.appendChild(tulip);
+            }
+        }
+
+        function createFloatingHearts() {
+            for (let i = 0; i < 15; i++) {
+                let heart = document.createElement("div");
+                heart.classList.add("floating-heart");
+                heart.innerHTML = "❤️";
+                heart.style.left = Math.random() * 100 + "%";
+                heart.style.animationDelay = Math.random() * 3 + "s";
+                heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+                document.body.appendChild(heart);
+            }
+        }
+
+        // Agregar corazones flotantes cuando se abre la carta
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar
+        });
+    </script>
 </body>
 </html>
