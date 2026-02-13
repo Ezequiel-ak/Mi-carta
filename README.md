@@ -1,2 +1,157 @@
 # Mi-carta
-Mi 14 
+Mi 14
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta 14 Febrero</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #ff4e8a, #ff99c8);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* Contenedor 3D */
+.scene{
+    width:300px;
+    height:200px;
+    perspective:1000px;
+    position:relative;
+}
+
+/* Sobre */
+.envelope{
+    width:100%;
+    height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    cursor:pointer;
+}
+
+.base{
+    width:100%;
+    height:100%;
+    background:white;
+    position:absolute;
+    border-radius:10px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.3);
+}
+
+.flap{
+    width:100%;
+    height:100%;
+    background:#ffe6f0;
+    position:absolute;
+    transform-origin:top;
+    transition:transform 1s ease;
+    clip-path:polygon(0 0,100% 0,50% 60%);
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+}
+
+.label{
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+    color:#e91e63;
+    text-align:center;
+    padding:10px;
+}
+
+.envelope.open .flap{
+    transform:rotateX(-180deg);
+}
+
+/* Carta */
+.letter{
+    position:absolute;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%) translateY(0);
+    width:85%;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    opacity:0;
+    max-height:65vh;
+    overflow-y:auto;
+    transition:all 1.2s ease;
+}
+
+.envelope.open + .letter{
+    transform:translateX(-50%) translateY(-230px);
+    opacity:1;
+}
+
+/* Tulipanes */
+.tulipanes{
+    text-align:center;
+    font-size:30px;
+    margin-bottom:15px;
+    animation:flotar 3s ease-in-out infinite;
+}
+
+@keyframes flotar{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-8px);}
+    100%{transform:translateY(0);}
+}
+
+.letter p{
+    color:#444;
+    line-height:1.6;
+    font-size:15px;
+}
+</style>
+</head>
+<body>
+
+<div class="scene">
+    <div class="envelope" id="envelope" onclick="openLetter()">
+        <div class="base"></div>
+        <div class="flap"></div>
+        <div class="label">💌 Abre la carta amor ❤️</div>
+    </div>
+
+    <div class="letter">
+        <div class="tulipanes">🌷🌷🌷</div>
+        <p>
+        Han pasado 5 meses desde que nuestras vidas se unieron, y cada día sé que eres el hombre de mi vida ❤️.
+        Estás en cada pensamiento y en cada latido de mi corazón; tu presencia ilumina mis días como un rayo de sol ☀️💖.
+        <br><br>
+        Me haces sentir la chica más amada del mundo con tus mensajes, llamadas y palabras de amor 💌.
+        Eres atento, cariñoso y siempre logras hacerme sonreír.
+        <br><br>
+        Estoy orgullosa de nosotros y de nuestra relación.
+        Eres mi compañero, mi amigo, mi confidente y mi todo 💞.
+        Eres el hombre de mis sueños, mi alma gemela, y contigo siento que puedo conquistar el mundo.
+        Te amo más de lo que las palabras pueden expresar 💕✨.
+        <br><br>
+        Desliza hacia arriba para seguir leyendo 💗
+        </p>
+    </div>
+</div>
+
+<audio id="music" src="musica.mp3"></audio>
+
+<script>
+function openLetter(){
+    document.getElementById("envelope").classList.add("open");
+    document.getElementById("music").play();
+}
+</script>
+
+</body>
+</html>
