@@ -1,225 +1,74 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carta Romántica</title>
-
-<style>
-body{
-    margin:0;
-    font-family:'Georgia', serif;
-    background:linear-gradient(135deg,#ff4e8a,#ff99c8);
-    overflow:hidden;
-}
-
-/* Luz suave animada */
-body::after{
-    content:"";
-    position:fixed;
-    width:200%;
-    height:200%;
-    background:radial-gradient(circle at center, rgba(255,255,255,0.3), transparent 60%);
-    animation:softLight 8s ease-in-out infinite alternate;
-}
-@keyframes softLight{
-    from{transform:translate(-10%,-10%) scale(1);}
-    to{transform:translate(-5%,-5%) scale(1.1);}
-}
-
-/* ESCENA */
-.scene{
-    width:100%;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    perspective:1500px;
-    position:relative;
-    z-index:2;
-}
-
-/* SOBRE */
-.envelope{
-    width:320px;
-    height:200px;
-    position:relative;
-    transform-style:preserve-3d;
-    cursor:pointer;
-    transition:all 1.5s ease;
-}
-
-.base{
-    width:100%;
-    height:100%;
-    background:white;
-    border-radius:12px;
-    box-shadow:0 20px 60px rgba(0,0,0,0.4);
-    position:absolute;
-}
-
-.flap{
-    width:100%;
-    height:100%;
-    background:#ffe6f0;
-    position:absolute;
-    transform-origin:top;
-    transition:transform 1.2s ease;
-    clip-path:polygon(0 0,100% 0,50% 65%);
-}
-
-.label{
-    position:absolute;
-    width:100%;
-    height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#e91e63;
-    font-weight:bold;
-    text-align:center;
-    padding:10px;
-}
-
-.envelope.open .flap{
-    transform:rotateX(-180deg);
-}
-
-.envelope.fadeOut{
-    transform:scale(4);
-    opacity:0;
-}
-
-/* INTERIOR CINEMÁTICO */
-.inside{
-    position:absolute;
-    width:100%;
-    height:100vh;
-    background:white;
-    top:0;
-    left:0;
-    opacity:0;
-    transition:opacity 2s ease;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding-top:80px;
-    overflow-y:auto;
-}
-
-.inside.show{
-    opacity:1;
-}
-
-/* RAMO */
-.bouquet{
-    font-size:70px;
-    margin-bottom:20px;
-    position:relative;
-}
-
-/* Tulipanes entrando */
-.tulip{
-    position:absolute;
-    font-size:40px;
-    animation:enterTulip 2s ease forwards;
-}
-
-@keyframes enterTulip{
-    from{
-        transform:translateY(-300px) scale(0.3);
-        opacity:0;
-    }
-    to{
-        transform:translateY(0) scale(1);
-        opacity:1;
-    }
-}
-
-/* TEXTO POÉTICO */
-.text{
-    width:85%;
-    max-width:600px;
-    opacity:0;
-    transform:translateY(40px);
-    animation:poemFade 2.5s ease forwards 2.5s;
-    color:#444;
-    font-size:17px;
-    line-height:1.8;
-    text-align:center;
-}
-
-@keyframes poemFade{
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Carta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        #envelope {
+            width: 200px;
+            height: 100px;
+            background: #f9f9f9;
+            border: 2px solid #bfbfbf;
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .question {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #ff0080;
+            animation: floatQuestion 2s ease-in-out infinite;
+        }
+        @keyframes floatQuestion {
+            0%, 100% { transform: translateY(-5px); }
+            50% { transform: translateY(5px); }
+        }
+        .wing {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            position: absolute;
+            animation: flap 1s ease-in-out infinite;
+        }
+        .wing-left {
+            border-bottom: 30px solid #ffcc00;
+            top: -15px;
+            left: -20px;
+            transform: rotate(-15deg);
+        }
+        .wing-right {
+            border-bottom: 30px solid #ffcc00;
+            top: -15px;
+            right: -20px;
+            transform: rotate(15deg);
+        }
+        @keyframes flap {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+    </style>
 </head>
 <body>
-
-<div class="scene">
-    <div class="envelope" id="envelope" onclick="openLetter()">
-        <div class="base"></div>
-        <div class="flap"></div>
-        <div class="label">💌 Abre la carta amor ❤️</div>
+    <div class="question">¿Quieres ser mi sanvalentin❤️?</div>
+    <div id="envelope">
+        <div class="wing wing-left"></div>
+        <div class="wing wing-right"></div>
     </div>
-</div>
-
-<div class="inside" id="inside">
-    <div class="bouquet" id="bouquet">💐</div>
-
-    <div class="text">
-        Han pasado 5 meses desde que nuestras vidas se unieron, y cada día sé que eres el hombre de mi vida ❤️.
-        <br><br>
-        Estás en cada pensamiento y en cada latido de mi corazón; tu presencia ilumina mis días como un rayo de sol ☀️💖.
-        <br><br>
-        Me haces sentir la chica más amada del mundo con tus mensajes, llamadas y palabras de amor 💌.
-        <br><br>
-        Eres atento, cariñoso y siempre logras hacerme sonreír.
-        <br><br>
-        Estoy orgullosa de nosotros y de nuestra relación.
-        Eres mi compañero, mi amigo, mi confidente y mi todo 💞.
-        <br><br>
-        Eres el hombre de mis sueños, mi alma gemela,
-        y contigo siento que puedo conquistar el mundo.
-        <br><br>
-        Te amo más de lo que las palabras pueden expresar 💕✨.
-        <br><br>
-        att:selena💘
-    </div>
-</div>
-
-<audio id="music" src="musica.mp3"></audio>
-
-<script>
-function openLetter(){
-    const envelope=document.getElementById("envelope");
-    envelope.classList.add("open");
-    document.getElementById("music").play();
-
-    setTimeout(()=>{
-        envelope.classList.add("fadeOut");
-    },1200);
-
-    setTimeout(()=>{
-        document.getElementById("inside").classList.add("show");
-        createTulips();
-    },2000);
-}
-
-function createTulips(){
-    const bouquet=document.getElementById("bouquet");
-    for(let i=0;i<6;i++){
-        let t=document.createElement("div");
-        t.classList.add("tulip");
-        t.innerHTML="🌷";
-        t.style.left=(i*25)+"px";
-        bouquet.appendChild(t);
-    }
-}
-</script>
-
 </body>
 </html>
